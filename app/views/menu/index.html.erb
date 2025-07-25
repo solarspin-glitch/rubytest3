@@ -1,0 +1,30 @@
+<h1>InOutBurger Menu</h1>
+<%= form_with url: place_order_path, method: :post do %>
+  <% @menu.each do |category, items| %>
+    <h2><%= category %></h2>
+    <div class="menu-category">
+      <% items.each do |item| %>
+        <div class="menu-item">
+          <strong><%= item[:name] %></strong>
+          <p><%= item[:description] %></p>
+          <span>$<%= '%.2f' % item[:price] %></span>
+          <input type="number" name="<%= item[:id] %>" min="0" value="0" />
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+  <%= submit_tag "Place Order" %>
+<% end %>
+
+<% if session[:order] %>
+  <hr>
+  <div id="summary">
+    <h2>Order Summary</h2>
+    <ul>
+      <% session[:order].each do |item| %>
+        <li><%= item[:quantity] %>x <%= item[:name] %> - $<%= '%.2f' % item[:total] %></li>
+      <% end %>
+    </ul>
+    <p><strong>Total: $<%= '%.2f' % session[:total] %></strong></p>
+  </div>
+<% end %>
